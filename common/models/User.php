@@ -1,6 +1,7 @@
 <?php
 namespace common\models;
 
+use app\models\Pet;
 use Yii;
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
@@ -11,7 +12,6 @@ use yii\web\IdentityInterface;
  * User model
  *
  * @property integer $id
- * @property string $username
  * @property string $password_hash
  * @property string $password_reset_token
  * @property string $verification_token
@@ -77,12 +77,12 @@ class User extends ActiveRecord implements IdentityInterface
     /**
      * Finds user by username
      *
-     * @param string $username
+     * @param $email
      * @return static|null
      */
-    public static function findByUsername($username)
+    public static function findByEmail($email)
     {
-        return static::findOne(['username' => $username, 'status' => self::STATUS_ACTIVE]);
+        return static::findOne(['email' => $email, 'status' => self::STATUS_ACTIVE]);
     }
 
     /**
@@ -209,4 +209,10 @@ class User extends ActiveRecord implements IdentityInterface
     {
         $this->password_reset_token = null;
     }
+
+    public function getPet()
+    {
+        return $this->hasMany(Pet::className(), ['user_id' => 'id']);
+    }
+
 }

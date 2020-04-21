@@ -15,11 +15,15 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>Please fill out the following fields to login:</p>
 
+    <p><b>Test user</b><br>
+        <em>admin@admin.ru</em><br>
+    <em>adminadmin</em></p>
+
     <div class="row">
         <div class="col-lg-5">
             <?php $form = ActiveForm::begin(['id' => 'login-form']); ?>
 
-                <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
+                <?= $form->field($model, 'email')->textInput(['autofocus' => true]) ?>
 
                 <?= $form->field($model, 'password')->passwordInput() ?>
 
