@@ -7,11 +7,17 @@ $params = array_merge(
 );
 
 return [
+    'language' => 'ru',
     'id' => 'app-frontend',
-//    'homeUrl' => '/',
+    'homeUrl' => '/',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'controllerNamespace' => 'frontend\controllers',
+    'modules' => [
+        'v1' => [
+            'class' => 'frontend\modules\v1\Module',
+        ],
+    ],
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-frontend',
@@ -45,12 +51,20 @@ return [
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
-            'enableStrictParsing' => true,
+            //'enableStrictParsing' => true,
             'rules' => [
                 ['class' => 'yii\rest\UrlRule', 'controller' => 'user'],
                 ['class' => 'yii\rest\UrlRule', 'controller' => 'pet'],
                 ['class' => 'yii\rest\UrlRule', 'controller' => 'order'],
-                //'<action:(index|about|contact|signup|login|logout)>' => 'site/<action>',
+                [
+                    'class' => \yii\rest\UrlRule::class,
+                    'controller' => ['v1/user'],
+                    'extraPatterns' => [
+                        'POST auth' => 'auth',
+                        'OPTIONS auth' => 'options',
+                    ],
+                    'pluralize' => false,
+                ],
             ],
         ],
 
