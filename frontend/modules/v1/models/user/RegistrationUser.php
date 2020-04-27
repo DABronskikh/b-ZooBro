@@ -2,7 +2,7 @@
 
 namespace frontend\modules\v1\models\user;
 
-use frontend\modules\api\v1\service\SendVerifyEmailUser;
+use Yii;
 use frontend\modules\v1\models\GetInfoByEntity;
 use common\models\User;
 use frontend\modules\v1\models\ValidationModel;
@@ -11,8 +11,6 @@ class RegistrationUser extends ValidationModel implements GetInfoByEntity
 {
     public $email;
     public $password;
-
-    private const VIEW_EMAIL_REGISTRATION = 'emailVerify';
 
     /**
      * {@inheritdoc}
@@ -44,10 +42,33 @@ class RegistrationUser extends ValidationModel implements GetInfoByEntity
         $user->generateEmailVerificationToken();
         $user->status = User::STATUS_ACTIVE;
 
-        return $user->save() &&
-            SendVerifyEmailUser::sendVerifyEmail(self::VIEW_EMAIL_REGISTRATION, $user);
+        return $user->save() && $this->sendVerifyEmail('emailVerify', $user, $this->email);
+
         // TODO: Добавить отправку сообщения о регистрации
 
+    }
+
+
+    /**
+     * Send email user
+     *
+     * @param string $viewEmail
+     * @param User $user
+     * @param string $email
+     * @return bool whether message is sent successfully.
+     */
+    public static function sendVerifyEmail($viewEmail, $user,  $email)
+    {
+        return Yii::$app
+            ->mailer
+            ->compose(
+                ['html' => $viewEmail . '-html', 'text' => $viewEmail . '-text'],
+                ['user' => $user]
+            )
+            ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name . ' robot'])
+            ->setTo($email)
+            ->setSubject('Подтверждение e-mail')
+            ->send();
     }
 
 }
