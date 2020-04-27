@@ -5,7 +5,7 @@ namespace frontend\modules\api\v1\service;
 use Yii;
 use common\models\User;
 
-class SendEmailUser
+class SendVerifyEmailUser
 {
     /**
      * Send email user
@@ -15,7 +15,7 @@ class SendEmailUser
      * @param string $subjectEmail
      * @return bool whether message is sent successfully.
      */
-    public static function sendEmail($viewEmail, $user,  $email = "")
+    public static function sendVerifyEmail($viewEmail, $user,  $email = "")
     {
         if ($email == "") 
             $email = $user->email;

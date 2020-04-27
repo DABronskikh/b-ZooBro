@@ -2,6 +2,7 @@
 
 namespace frontend\modules\v1\models\user;
 
+use frontend\modules\api\v1\service\SendVerifyEmailUser;
 use frontend\modules\v1\models\GetInfoByEntity;
 use common\models\User;
 use frontend\modules\v1\models\ValidationModel;
@@ -10,6 +11,8 @@ class RegistrationUser extends ValidationModel implements GetInfoByEntity
 {
     public $email;
     public $password;
+
+    private const VIEW_EMAIL_REGISTRATION = 'emailVerify';
 
     /**
      * {@inheritdoc}
@@ -41,7 +44,8 @@ class RegistrationUser extends ValidationModel implements GetInfoByEntity
         $user->generateEmailVerificationToken();
         $user->status = User::STATUS_ACTIVE;
 
-        return $user->save();
+        return $user->save() &&
+            SendVerifyEmailUser::sendVerifyEmail(self::VIEW_EMAIL_REGISTRATION, $user);
         // TODO: Добавить отправку сообщения о регистрации
 
     }
