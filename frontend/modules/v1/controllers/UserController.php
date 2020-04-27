@@ -2,6 +2,7 @@
 
 namespace frontend\modules\v1\controllers;
 
+use frontend\modules\v1\models\user\RegistrationUser;
 use frontend\modules\v1\models\user\AuthenticationUser;
 
 class UserController extends ApiController
@@ -23,6 +24,11 @@ class UserController extends ApiController
     public function actionAuth()
     {
         return $this->doActionByEntity(new AuthenticationUser(), true);
+    }
+
+    public function actionRegister()
+    {
+        return $this->doActionByEntity(new RegistrationUser(), true);
     }
 
 }

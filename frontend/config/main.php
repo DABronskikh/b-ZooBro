@@ -62,6 +62,9 @@ return [
                     'extraPatterns' => [
                         'POST auth' => 'auth',
                         'OPTIONS auth' => 'options',
+
+                        'POST register' => 'register',
+                        'OPTIONS register' => 'options',
                     ],
                     'pluralize' => false,
                 ],
