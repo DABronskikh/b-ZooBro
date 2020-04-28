@@ -2,6 +2,7 @@
 
 namespace frontend\modules\v1\controllers;
 
+use frontend\modules\v1\models\user\GetUser;
 use frontend\modules\v1\models\user\RegistrationUser;
 use frontend\modules\v1\models\user\AuthenticationUser;
 
@@ -19,6 +20,11 @@ class UserController extends ApiController
         ];
 
         return $behaviors;
+    }
+
+    public function actionIndex()
+    {
+        return $this->getInfoByEntity(new GetUser());
     }
 
     public function actionAuth()

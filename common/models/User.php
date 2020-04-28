@@ -215,4 +215,14 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return $this->hasMany(Pet::className(), ['user_id' => 'id']);
     }
+
+    public function getApiData()
+    {
+        return [
+            'email' => $this->email,
+            'name' => $this->name,
+            'is_admin' => $this->is_admin,
+            'phone' => $this->phone,
+        ];
+    }
 }
