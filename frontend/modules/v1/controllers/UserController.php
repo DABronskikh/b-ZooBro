@@ -5,6 +5,7 @@ namespace frontend\modules\v1\controllers;
 use frontend\modules\v1\models\user\GetUser;
 use frontend\modules\v1\models\user\RegistrationUser;
 use frontend\modules\v1\models\user\AuthenticationUser;
+use frontend\modules\v1\models\user\UpdateUser;
 
 class UserController extends ApiController
 {
@@ -16,7 +17,6 @@ class UserController extends ApiController
         $behaviors['authenticator']['only'] = [
             'index',
             'update',
-            'change-password',
         ];
 
         return $behaviors;
@@ -35,6 +35,11 @@ class UserController extends ApiController
     public function actionRegister()
     {
         return $this->doActionByEntity(new RegistrationUser(), true);
+    }
+
+    public function actionUpdate()
+    {
+        return $this->doActionByEntity(new UpdateUser(), true);
     }
 
 }

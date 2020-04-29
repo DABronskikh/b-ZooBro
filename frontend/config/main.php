@@ -68,6 +68,9 @@ return [
 
                         'GET index' => 'index',
                         'OPTIONS index' => 'options',
+
+                        'POST update' => 'update',
+                        'OPTIONS update' => 'options',
                     ],
                     'pluralize' => false,
                 ],
