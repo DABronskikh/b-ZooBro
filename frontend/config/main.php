@@ -65,6 +65,12 @@ return [
 
                         'POST register' => 'register',
                         'OPTIONS register' => 'options',
+
+                        'GET index' => 'index',
+                        'OPTIONS index' => 'options',
+
+                        'POST update' => 'update',
+                        'OPTIONS update' => 'options',
                     ],
                     'pluralize' => false,
                 ],
