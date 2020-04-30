@@ -14,15 +14,15 @@ class m200415_180122_create_pet_table extends Migration
     {
         $this->createTable('{{%pet}}', [
             'id' => $this->primaryKey(),
-            'user_id' => $this->integer()->notNull(),
-            'name' => $this->string()->notNull(),
-            'gender' => $this->string()->notNull(),
-            'type' => $this->string()->notNull(),
-            'size' => $this->string()->notNull(),
-            'breed' => $this->string()->null(),
+            'user_id' => $this->integer(11)->notNull(),
+            'name' => $this->string(255)->notNull(),
+            'gender' => $this->string(255)->notNull(),
+            'type' => $this->string(255)->notNull(),
+            'size' => $this->string(50)->notNull(),
+            'breed' => $this->string(100)->null(),
             'birthday_date' => $this->date()->null(),
-            'birthday_years' => $this->string()->null(),
-            'food_exceptions' => $this->integer()->defaultValue('0'),
+            'birthday_years' => $this->string(50)->null(),
+            'food_exceptions' => $this->integer(255)->defaultValue('0'),
 
         ]);
     }
