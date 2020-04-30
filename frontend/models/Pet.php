@@ -61,14 +61,9 @@ class Pet extends \yii\db\ActiveRecord
         ];
     }
 
-    public function getUser()
-    {
-        return $this->hasOne(User::className(), ['id' => 'user_id']);
-    }
-
     public function getOrder()
     {
-        return $this->hasMany(Order::className(), ['id' => 'pet_id']);
+        return $this->hasOne(Order::className(), ['pet_id' => 'user_id']);
     }
 
 }

@@ -1,6 +1,7 @@
 <?php
 namespace common\models;
 
+use app\models\Order;
 use app\models\Pet;
 use Yii;
 use yii\base\NotSupportedException;
@@ -11,16 +12,16 @@ use yii\web\IdentityInterface;
 /**
  * User model
  *
- * @property integer $id
- * @property string $password_hash
- * @property string $password_reset_token
- * @property string $verification_token
- * @property string $email
+ * @property int $id
  * @property string $auth_key
- * @property integer $status
- * @property integer $created_at
- * @property integer $updated_at
- * @property string $password write-only password
+ * @property string $password_hash
+ * @property string|null $password_reset_token
+ * @property string $email
+ * @property string|null $mobile
+ * @property int $status
+ * @property int $created_at
+ * @property int $updated_at
+ * @property string|null $verification_token
  */
 class User extends ActiveRecord implements IdentityInterface
 {
@@ -211,9 +212,9 @@ class User extends ActiveRecord implements IdentityInterface
         $this->password_reset_token = null;
     }
 
-    public function getPet()
+    public function getOrder()
     {
-        return $this->hasMany(Pet::className(), ['user_id' => 'id']);
+        return $this->hasMany(Order::className(), ['user_id' => 'id']);
     }
 
     public function getApiData()
