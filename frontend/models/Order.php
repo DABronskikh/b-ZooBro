@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use common\models\User;
 use Yii;
 
 /**
@@ -51,9 +52,24 @@ class Order extends \yii\db\ActiveRecord
         ];
     }
 
+    public function getUser()
+    {
+        return $this->hasOne(User::className(), ['id' => 'user_id']);
+    }
+
     public function getPet()
     {
-        return $this->hasOne(Pet::className(), ['pet_id' => 'id']);
+        return $this->hasOne(Pet::className(), ['user_id' => 'pet_id']);
+    }
+
+    public function getPrice()
+    {
+        return $this->hasOne(Price::className(), ['id' => 'price_id']);
+    }
+
+    public function getOrderStatus()
+    {
+        return $this->hasOne(OrderStatus::className(), ['id' => 'status_id']);
     }
 
 }
