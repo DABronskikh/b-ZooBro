@@ -74,6 +74,21 @@ return [
                     ],
                     'pluralize' => false,
                 ],
+                [
+                    'class' => \yii\rest\UrlRule::class,
+                    'controller' => ['v1/pets'],
+                    'extraPatterns' => [
+                        'GET index' => 'index',
+                        'OPTIONS index' => 'options',
+
+                        'POST create' => 'create',
+                        'OPTIONS create' => 'options',
+
+                        'POST update' => 'update',
+                        'OPTIONS update' => 'options',
+                    ],
+                    'pluralize' => false,
+                ],
             ],
         ],
 

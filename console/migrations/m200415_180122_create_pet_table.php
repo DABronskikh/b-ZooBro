@@ -22,7 +22,7 @@ class m200415_180122_create_pet_table extends Migration
             'breed' => $this->string(100)->null(),
             'birthday_date' => $this->date()->null(),
             'birthday_years' => $this->string(50)->null(),
-            'food_exceptions' => $this->integer(255)->defaultValue('0'),
+            'food_exceptions' => $this->string(255)->notNull(),
 
         ]);
     }

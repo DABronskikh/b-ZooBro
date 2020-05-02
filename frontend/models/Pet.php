@@ -17,7 +17,7 @@ use Yii;
  * @property string|null $breed
  * @property string|null $birthday_date
  * @property string|null $birthday_years
- * @property int|null $food_exceptions
+ * @property string|null $food_exceptions
  */
 class Pet extends \yii\db\ActiveRecord
 {
@@ -36,9 +36,9 @@ class Pet extends \yii\db\ActiveRecord
     {
         return [
             [['user_id', 'name', 'gender', 'type', 'size'], 'required'],
-            [['user_id', 'food_exceptions'], 'integer'],
+            [['user_id'], 'integer'],
             [['birthday_date'], 'safe'],
-            [['name', 'gender', 'type', 'size', 'breed', 'birthday_years'], 'string', 'max' => 255],
+            [['name', 'gender', 'type', 'size', 'breed', 'birthday_years', 'food_exceptions'], 'string', 'max' => 255],
         ];
     }
 
@@ -64,6 +64,13 @@ class Pet extends \yii\db\ActiveRecord
     public function getOrder()
     {
         return $this->hasOne(Order::className(), ['pet_id' => 'user_id']);
+    }
+
+    public function fields()
+    {
+        $fields = parent::fields();
+        unset($fields['user_id'], $fields['type']);
+        return $fields;
     }
 
 }
