@@ -16,7 +16,7 @@ class UpdateUser extends ValidationModel implements GetInfoByEntity
 
     /*@var User */
     private $user;
-    
+
     public function __construct()
     {
         $user = Yii::$app->user->identity;
