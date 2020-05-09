@@ -50,25 +50,6 @@ class CreateOrders extends ValidationModel implements GetInfoByEntity
         ];
     }
 
-
-    //Запрос
-//      {
-//      "price_id" : "1",
-//      "pet_name" : "Цобака-покусака",
-//      "gender" : "m",
-//      "size" : "1",
-//      "type" : "1",
-//      "breed" : "null",
-//      "birthday_date" : "2019-02-05",
-//      "birthday_years" : "4-7",
-//      "food_exceptions" : "null",
-//      "user_name": "name",
-//      "email": "shurikoz@ya.ru",
-//      "phone": 9001001010,
-//      "address": "address 10",
-//      "date_delivery" : "2019-02-05",
-//      "time_delivery" : "23:45"
-//      }
     /**
      * @return array|bool
      * @throws \Exception
@@ -95,21 +76,35 @@ class CreateOrders extends ValidationModel implements GetInfoByEntity
 //        $user->phone = $this->phone;
 
 
-//        {
-//            "pet_name": "Чарли",
-//            "gender": "m",
-//            "size": "2",
-//            "breed" : "null",
-//            "birthday_date": "2017-01-20" ,
-//            "birthday_years": "4-7",
-//            "food_exceptions":"null"
-//        }
-
+        // данные для запроса
+        //  {
+        //      "pet_id": "10",
+        //
+        //      "pet_name" : "Цобака-покусака",
+        //      "gender" : "m",
+        //      "size" : "1",
+        //      "type" : "dog",
+        //      "breed" : "null",
+        //      "birthday_date" : "2019-02-05",
+        //      "birthday_years" : "4-7",
+        //      "food_exceptions" : "null",
+        //
+        //      "price_id" : "1",
+        //      "user_name" : "name",
+        //      "email" : "yandex@yandex.ru",
+        //      "phone" : 9001001010,
+        //      "status_id" : "0",
+        //      "address" : "address 10",
+        //      "date_delivery" : "2019-02-05",
+        //      "time_delivery" : "23:45",
+        //      "cost" : "false",
+        //      "comment" : "Комментарий"
+        //  }
 
         $pet = new Pet([
             'gender' => $this->gender,
             'birthday_date' => $this->birthday_date,
-            'name' => $this->name,
+            'name' => $this->pet_name,
             'size' => $this->size,
             'breed' => $this->breed,
             'birthday_years' => $this->birthday_years,
@@ -119,20 +114,49 @@ class CreateOrders extends ValidationModel implements GetInfoByEntity
             'type' => $this->type,
         ]);
 
-//        $order = new Order([
-//            'price_id' => $this->price_id,
-//            'size' => $this->size,
-//            'status_id' => $this->status_id,
-//            'address' => $this->address,
-//            'date_delivery' => $this->date_delivery,
-//            'time_delivery' => $this->time_delivery,
-//            'user_id' => $this->user_id,
-//            'cost' => $this->cost,
-//            'comment' => $this->comment,
-//        ]);
+
+        $order = new Order([
+            'pet_id' => $this->pet_id,
+            'price_id' => $this->price_id,
+            'size' => $this->size,
+            'status_id' => $this->status_id,
+            'address' => $this->address,
+            'date_delivery' => $this->date_delivery,
+            'time_delivery' => $this->time_delivery,
+            'user_id' => $this->user_id,
+            'cost' => $this->cost,
+            'comment' => $this->comment,
+        ]);
+
+        if ($this->pet_id != "null") {
+            if ($pet->save()) {
+                return ($order->save()) ? ['pet_id' => $pet->id, 'order_id' => $order->id] : false;
+            } else{
+                return false;
+            }
+        } else {
+            return ($order->save()) ? ['id' => $order->id] : false;
+        }
+
+//                return ($order->save()) ? ['id' => $order->id] : false;
+
+
+
+
+
+//        if ($this->pet_id) {
+//            if ($pet->save()) {
+//                $order->save() ? (['pet_id' => $pet->id, 'order_id' => $order->id]) : false;
+//            } else {
+//                return false;
+//            }
+//        } else {
+//            return $order->save() ? ['pet_id' => $pet->id] : false;
+//        }
 
         //если есть данные о питомце, то сохраним питомца
-        return ($pet->save()) ? ['id' => $pet->id] : false;
+//        return ($pet->save()) ? ['id' => $pet->id] : false;
+//        return ($pet->save()) ? true : false;
 
 //        if ($pet->save()) {
 //            $this->pet_id = $pet->id;
