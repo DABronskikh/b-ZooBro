@@ -17,13 +17,11 @@ use yii\web\IdentityInterface;
  * @property string $password_hash
  * @property string|null $password_reset_token
  * @property string $email
- * @property string|null $phone
+ * @property string|null $mobile
  * @property int $status
  * @property int $created_at
  * @property int $updated_at
  * @property string|null $verification_token
- * @property int $name
-
  */
 class User extends ActiveRecord implements IdentityInterface
 {

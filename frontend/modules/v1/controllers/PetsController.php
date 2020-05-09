@@ -2,6 +2,7 @@
 
 namespace frontend\modules\v1\controllers;
 
+
 use frontend\modules\v1\models\pets\CreatePets;
 use frontend\modules\v1\models\pets\GetPets;
 use frontend\modules\v1\models\pets\UpdatePets;
@@ -13,6 +14,7 @@ class PetsController extends ApiController
     {
         return $this->getInfoByEntity(new GetPets());
     }
+
 
     public function actionUpdate()
     {
