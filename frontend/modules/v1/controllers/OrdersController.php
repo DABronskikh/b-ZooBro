@@ -14,14 +14,14 @@ class OrdersController extends ApiController
         return $this->getInfoByEntity(new GetOrders());
     }
 
-    public function actionCreate()
-    {
-        return $this->doActionByEntity(new CreateOrders());
-    }
-
     public function actionUpdate()
     {
         return $this->doActionByEntity(new UpdateOrders());
+    }
+
+    public function actionCreate()
+    {
+        return $this->doActionByEntity(new CreateOrders());
     }
 
 }
