@@ -30,7 +30,8 @@ class GetOrders extends ValidationModel implements GetInfoByEntity
             return false;
         }
 
-        return Order::findAll(['user_id' => $this->user_id]);
+        $rez['orders'] = Order::findAll(['user_id' => $this->user_id]);
+        return $rez;
 
     }
 }
