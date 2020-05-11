@@ -36,7 +36,6 @@ class CreateOrders extends ValidationModel implements GetInfoByEntity
     public function rules()
     {
         return [
-            // ToDo дописать валидаторы для обязательных полей
             [['email'], 'trim'],
             ['email', 'email', 'message' => 'Не валидный email адрес.'],
             ['email', 'required', 'message' => 'email не может быть пустым'],
@@ -53,7 +52,6 @@ class CreateOrders extends ValidationModel implements GetInfoByEntity
             ['time_delivery', 'date', 'format'=>'H:i'],
             [['address', 'size'], 'string', 'max' => '255'],
             ['price_id', 'integer'],
-
         ];
     }
 
@@ -77,7 +75,6 @@ class CreateOrders extends ValidationModel implements GetInfoByEntity
             //$password = $this->gen_password(8);
             $password = 'password';
 
-            // ToDo отправить пароль в сообщении (Выполнено. Пароль отправляется в письме с верификацией.)
             $rez['password'] = $password;
 
             $user = new User();
@@ -130,64 +127,8 @@ class CreateOrders extends ValidationModel implements GetInfoByEntity
             'comment' => 'Новый заказ',
         ]);
 
-        
-        <<<<<<< Updated upstream
         //$rez['$order'] = $order;
         return ($order->save()) ? ['id' => $order->id] : false;
-=======
-        if ($this->pet_id == "null") {
-            if ($pet->save()) {
-                return ($order->save()) ? ['pet_id' => $pet->id, 'order_id' => $order->id] : false;
-            } else{
-                return false;
-            }
-        } else {
-            return ($order->save()) ? ['id' => $order->id] : false;
-        }
-
-//                return ($order->save()) ? ['id' => $order->id] : false;
-
-
-
-
-
-//        if ($this->pet_id) {
-//            if ($pet->save()) {
-//                $order->save() ? (['pet_id' => $pet->id, 'order_id' => $order->id]) : false;
-//            } else {
-//                return false;
-//            }
-//        } else {
-//            return $order->save() ? ['pet_id' => $pet->id] : false;
-//        }
-
-        //если есть данные о питомце, то сохраним питомца
-//        return ($pet->save()) ? ['id' => $pet->id] : false;
-//        return ($pet->save()) ? true : false;
-
-//        if ($pet->save()) {
-//            $this->pet_id = $pet->id;
-//            return $order->save() ? true : false;
-//        } //            $order->save() ? true : false;
-//        else {
-//            return $order->save() ? ['pet_id' => $pet->id] : false;
-//        }
-
-
-//            $pet->user_id = $this->user_id;
-//            $order->user_id = $this->user_id;
-//            if ($pet->save()) {
-//                $order->pet_id = $pet->id;
-//                $order->save() ? true : false;
-//            } else {
-//                return false;
-//            }
-
-
-//        return ($order->save()) ? ['id' => $order->id] : false;
-//        return ($pet->save()) ? ['id' => $pet->id] : false;
-
->>>>>>> Stashed changes
     }
 
     /**
