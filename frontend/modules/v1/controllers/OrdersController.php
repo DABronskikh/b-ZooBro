@@ -9,6 +9,18 @@ use frontend\modules\v1\models\orders\UpdateOrders;
 class OrdersController extends ApiController
 {
 
+    public function behaviors()
+    {
+        $behaviors = parent::behaviors();
+
+        $behaviors['authenticator']['only'] = [
+            'index',
+            'update',
+        ];
+
+        return $behaviors;
+    }
+
     public function actionIndex()
     {
         return $this->getInfoByEntity(new GetOrders());

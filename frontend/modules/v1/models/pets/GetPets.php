@@ -30,7 +30,10 @@ class GetPets extends ValidationModel implements GetInfoByEntity
             return false;
         }
 
-        return Pet::findAll(['user_id' => $this->user_id]);
+        $res['pets'] = Pet::findAll(['user_id' => $this->user_id]);
+        //$res['pets'] = Pet::find()->where(['user_id' => $this->user_id])->all();
+        return $res;
+
 
 //        return new ActiveDataProvider([
 //            'query' => Pet::find()->where(['user_id' => $this->user_id]),
