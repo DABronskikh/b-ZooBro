@@ -7,6 +7,7 @@ use app\models\Pet;
 use app\models\Price;
 use common\models\User;
 use frontend\modules\v1\models\GetInfoByEntity;
+use frontend\modules\v1\models\user\RegistrationUser;
 use frontend\modules\v1\models\ValidationModel;
 
 class CreateOrders extends ValidationModel implements GetInfoByEntity
@@ -46,6 +47,13 @@ class CreateOrders extends ValidationModel implements GetInfoByEntity
             ['phone', 'required', 'message' => 'укажи контактный телефон'],
             ['size', 'required', 'message' => 'укажи размер питомца'],
             ['price_id', 'required', 'message' => 'укажи тип коробки'],
+
+            ['phone', 'integer', 'max' => 10],
+            ['date_delivery', 'date'],
+            ['time_delivery', 'date', 'format'=>'H:i'],
+            [['address', 'size'], 'string', 'max' => '255'],
+            ['price_id', 'integer'],
+
         ];
     }
 
@@ -69,7 +77,7 @@ class CreateOrders extends ValidationModel implements GetInfoByEntity
             //$password = $this->gen_password(8);
             $password = 'password';
 
-            // ToDo отправить пароль в сообщении
+            // ToDo отправить пароль в сообщении (Выполнено. Пароль отправляется в письме с верификацией.)
             $rez['password'] = $password;
 
             $user = new User();
@@ -80,12 +88,11 @@ class CreateOrders extends ValidationModel implements GetInfoByEntity
             $user->status = User::STATUS_ACTIVE;
             $user->name = $this->user_name;
             $user->phone = $this->phone;
-            $user->save();
+            $user->save() && RegistrationUser::sendVerifyEmail('emailVerify', $user, $this->email, $password);
 
             // забираем нового пользователя для формирования заказа
             $this->_user = User::findByEmail($this->email);
         }
-
 
         // проверяем наличие данных для нового питомца
         if ($this->pet_name && $this->gender && $this->size) {
@@ -123,8 +130,64 @@ class CreateOrders extends ValidationModel implements GetInfoByEntity
             'comment' => 'Новый заказ',
         ]);
 
+        
+        <<<<<<< Updated upstream
         //$rez['$order'] = $order;
         return ($order->save()) ? ['id' => $order->id] : false;
+=======
+        if ($this->pet_id == "null") {
+            if ($pet->save()) {
+                return ($order->save()) ? ['pet_id' => $pet->id, 'order_id' => $order->id] : false;
+            } else{
+                return false;
+            }
+        } else {
+            return ($order->save()) ? ['id' => $order->id] : false;
+        }
+
+//                return ($order->save()) ? ['id' => $order->id] : false;
+
+
+
+
+
+//        if ($this->pet_id) {
+//            if ($pet->save()) {
+//                $order->save() ? (['pet_id' => $pet->id, 'order_id' => $order->id]) : false;
+//            } else {
+//                return false;
+//            }
+//        } else {
+//            return $order->save() ? ['pet_id' => $pet->id] : false;
+//        }
+
+        //если есть данные о питомце, то сохраним питомца
+//        return ($pet->save()) ? ['id' => $pet->id] : false;
+//        return ($pet->save()) ? true : false;
+
+//        if ($pet->save()) {
+//            $this->pet_id = $pet->id;
+//            return $order->save() ? true : false;
+//        } //            $order->save() ? true : false;
+//        else {
+//            return $order->save() ? ['pet_id' => $pet->id] : false;
+//        }
+
+
+//            $pet->user_id = $this->user_id;
+//            $order->user_id = $this->user_id;
+//            if ($pet->save()) {
+//                $order->pet_id = $pet->id;
+//                $order->save() ? true : false;
+//            } else {
+//                return false;
+//            }
+
+
+//        return ($order->save()) ? ['id' => $order->id] : false;
+//        return ($pet->save()) ? ['id' => $pet->id] : false;
+
+>>>>>>> Stashed changes
     }
 
     /**

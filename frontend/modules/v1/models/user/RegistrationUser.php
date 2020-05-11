@@ -42,7 +42,7 @@ class RegistrationUser extends ValidationModel implements GetInfoByEntity
         $user->generateEmailVerificationToken();
         $user->status = User::STATUS_ACTIVE;
 
-        return $user->save() && $this->sendVerifyEmail('emailVerify', $user, $this->email);
+        return $user->save() && $this->sendVerifyEmail('emailVerify', $user, $this->email, $this->password);
 
         // TODO: Добавить отправку сообщения о регистрации
 
@@ -57,13 +57,14 @@ class RegistrationUser extends ValidationModel implements GetInfoByEntity
      * @param string $email
      * @return bool whether message is sent successfully.
      */
-    public static function sendVerifyEmail($viewEmail, $user,  $email)
+    public static function sendVerifyEmail($viewEmail, $user,  $email, $password)
     {
+
         return Yii::$app
             ->mailer
             ->compose(
                 ['html' => $viewEmail . '-html', 'text' => $viewEmail . '-text'],
-                ['user' => $user]
+                ['user' => $user, 'password' => $password]
             )
             ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name . ' robot'])
             ->setTo($email)
