@@ -76,6 +76,15 @@ class Order extends \yii\db\ActiveRecord
         ];
     }
 
+    public function extraFields()
+    {
+        return [
+            'pet',
+            'status',
+            'user',
+        ];
+    }
+
     /**
      * Gets query for [[Status]].
      *

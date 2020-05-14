@@ -3,28 +3,29 @@
 namespace frontend\modules\v1\models\orders;
 
 use app\models\Order;
+use app\models\OrderStatus;
+use app\models\Pet;
+use app\models\Price;
+use common\models\User;
 use frontend\modules\v1\models\GetInfoByEntity;
 use frontend\modules\v1\models\ValidationModel;
 use Yii;
+use yii\web\NotFoundHttpException;
 
 class UpdateOrders extends ValidationModel implements GetInfoByEntity
 {
-    private $user_id;
-
     public $id;
-    public $name;
-    public $gender;
-    public $type;
+    public $pet_id;
+    public $price_id;
     public $size;
-    public $breed;
-    public $birthday_date;
-    public $birthday_years;
-    public $food_exceptions;
-
-    public function __construct()
-    {
-        $this->user_id = Yii::$app->user->identity->getId();
-    }
+    public $status_id;
+    public $address;
+    public $date_create;
+    public $date_delivery;
+    public $time_delivery;
+    public $user_id;
+    public $cost;
+    public $comment;
 
     /**
      * {@inheritdoc}
@@ -32,15 +33,16 @@ class UpdateOrders extends ValidationModel implements GetInfoByEntity
     public function rules()
     {
         return [
-            ['id', 'required', 'message' => 'Не указан идентификатор питомца'],
-            ['id', 'integer', 'message' => 'Идентификатор питомца должен быть числом'],
-
-            [['name', 'gender', 'type', 'breed', 'birthday_years', 'food_exceptions'], 'trim'],
-
-            ['name', 'string', 'min' => 3, 'tooShort' => 'Минимальная длина имени 3 символа.'],
-            ['name', 'string', 'max' => 50, 'tooLong' => 'Максимальная длина имени 50 символов.'],
-
-            [['name', 'gender', 'type', 'breed', 'birthday_years', 'food_exceptions'], 'string', 'max' => 255],
+            [['id', 'pet_id', 'price_id', 'status_id', 'user_id'], 'integer'],
+            [['id', 'size', 'address', 'date_delivery', 'time_delivery', 'user_id', 'cost', 'comment'], 'required'],
+            [['date_create', 'date_delivery', 'time_delivery'], 'safe'],
+            [['cost'], 'number'],
+            [['size', 'address'], 'string', 'max' => 255],
+            [['comment'], 'string', 'max' => 1500],
+            [['status_id'], 'exist', 'skipOnError' => true, 'targetClass' => OrderStatus::className(), 'targetAttribute' => ['status_id' => 'id']],
+            [['pet_id'], 'exist', 'skipOnError' => true, 'targetClass' => Pet::className(), 'targetAttribute' => ['pet_id' => 'id']],
+            [['price_id'], 'exist', 'skipOnError' => true, 'targetClass' => Price::className(), 'targetAttribute' => ['price_id' => 'id']],
+            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
 
@@ -50,14 +52,13 @@ class UpdateOrders extends ValidationModel implements GetInfoByEntity
             return false;
         }
 
-        $order = Order::findOne($this->id);
+        $model = Order::findOne($this->id);
+        if ($model->load(Yii::$app->request->post(), '') && $model->save()) {
+        return  $model;
+        }
 
-//        if ($this->gender) {
-//            $order->gender = $this->gender;
-//        }
-
-        return ($order->save()) ? true : false;
-
+        return false;
     }
+
 }
 
