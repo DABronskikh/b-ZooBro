@@ -23,6 +23,7 @@ use yii\web\IdentityInterface;
  * @property int $status
  * @property int $created_at
  * @property int $updated_at
+ * @property int $is_admin
  * @property string|null $verification_token
  */
 class User extends ActiveRecord implements IdentityInterface
@@ -226,6 +227,15 @@ class User extends ActiveRecord implements IdentityInterface
             'name' => $this->name,
             'is_admin' => $this->is_admin,
             'phone' => $this->phone,
+        ];
+    }
+
+    public function fields()
+    {
+        return [
+            'email' => 'email',
+            'name' => 'name',
+            'phone' => 'phone',
         ];
     }
 }
