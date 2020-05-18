@@ -53,9 +53,6 @@ return [
             'showScriptName' => false,
             //'enableStrictParsing' => true,
             'rules' => [
-                //['class' => 'yii\rest\UrlRule', 'controller' => 'user'],
-                //['class' => 'yii\rest\UrlRule', 'controller' => 'pet'],
-                //['class' => 'yii\rest\UrlRule', 'controller' => 'order'],
                 [
                     'class' => \yii\rest\UrlRule::class,
                     'controller' => ['v1/user'],
@@ -98,6 +95,18 @@ return [
 
                         'POST create' => 'create',
                         'OPTIONS create' => 'options',
+
+                        'POST update' => 'update',
+                        'OPTIONS update' => 'options',
+                    ],
+                    'pluralize' => false,
+                ],
+                [
+                    'class' => \yii\rest\UrlRule::class,
+                    'controller' => ['v1/orders-admin'],
+                    'extraPatterns' => [
+                        'GET index' => 'index',
+                        'OPTIONS index' => 'options',
                     ],
                     'pluralize' => false,
                 ],
