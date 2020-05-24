@@ -2,6 +2,7 @@
 
 namespace frontend\modules\v1\models\orders;
 
+use Yii;
 use app\models\Order;
 use app\models\Pet;
 use app\models\Price;
@@ -128,7 +129,30 @@ class CreateOrders extends ValidationModel implements GetInfoByEntity
         ]);
 
         //$rez['$order'] = $order;
-        return ($order->save()) ? ['id' => $order->id] : false;
+        return ($order->save() && $this->sendEmailOrderSuccess('emailOrderSuccess', $this->_user, $this->email, $order)) ? ['id' => $order->id] : false;
+    }
+
+    /**
+     * Send email user
+     *
+     * @param string $viewEmail
+     * @param User $user
+     * @param string $email
+     * @param $order
+     * @return bool whether message is sent successfully.
+     */
+    public static function sendEmailOrderSuccess($viewEmail, $user, $email, $order)
+    {
+        return Yii::$app
+            ->mailer
+            ->compose(
+                ['html' => $viewEmail . '-html', 'text' => $viewEmail . '-text'],
+                ['user' => $user, 'order' => $order]
+            )
+            ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name . ' robot'])
+            ->setTo($email)
+            ->setSubject('Ваш заказ создан')
+            ->send();
     }
 
     /**
