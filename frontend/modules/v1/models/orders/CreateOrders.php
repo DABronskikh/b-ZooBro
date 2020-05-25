@@ -45,12 +45,13 @@ class CreateOrders extends ValidationModel implements GetInfoByEntity
             ['date_delivery', 'required', 'message' => 'укажи дату доставки'],
             ['address', 'required', 'message' => 'укажи адрес доставки'],
             ['phone', 'required', 'message' => 'укажи контактный телефон'],
+
             ['size', 'required', 'message' => 'укажи размер питомца'],
+
             ['price_id', 'required', 'message' => 'укажи тип коробки'],
 
-            ['phone', 'integer', 'max' => 10],
-            ['date_delivery', 'date'],
-            ['time_delivery', 'date', 'format'=>'H:i'],
+            ['phone', 'integer', 'max' => 9999999999, 'min' => 9000000000],
+            [['date_delivery', 'time_delivery', 'pet_name', 'gender'], 'safe'],
             [['address', 'size'], 'string', 'max' => '255'],
             ['price_id', 'integer'],
         ];
@@ -109,11 +110,11 @@ class CreateOrders extends ValidationModel implements GetInfoByEntity
             ]);
             $pet->save();
             $this->pet_id = $pet->id;
-            //$rez['$pet'] = $pet;
+            $rez['$pet'] = $pet;
         }
 
         $price = Price::findOne($this->price_id);
-        //$rez['$price'] = $price;
+        $rez['$price'] = $price;
 
         $order = new Order([
             'pet_id' => $this->pet_id,
