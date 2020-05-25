@@ -93,8 +93,8 @@ class CreateOrders extends ValidationModel implements GetInfoByEntity
             $rez[] = 'пользователь найден';
         } else {
             $rez[] = ' нужно создать пользователя';
-            //$password = $this->gen_password(8);
-            $password = 'password';
+            $password = $this->gen_password(8);
+            //$password = 'password';
 
             $rez['password'] = $password;
 
