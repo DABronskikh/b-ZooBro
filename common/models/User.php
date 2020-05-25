@@ -18,6 +18,7 @@ use yii\web\IdentityInterface;
  * @property string|null $password_reset_token
  * @property string $email
  * @property string $name
+ * @property string $address
  * @property int $phone
  * @property string|null $mobile
  * @property int $status
@@ -227,6 +228,7 @@ class User extends ActiveRecord implements IdentityInterface
             'name' => $this->name,
             'is_admin' => $this->is_admin,
             'phone' => $this->phone,
+            'address' => $this->address,
         ];
     }
 
@@ -236,6 +238,8 @@ class User extends ActiveRecord implements IdentityInterface
             'email' => 'email',
             'name' => 'name',
             'phone' => 'phone',
+            'address' => 'address',
+            'is_admin' => 'is_admin',
         ];
     }
 }
