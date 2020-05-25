@@ -27,6 +27,7 @@ class CreateOrders extends ValidationModel implements GetInfoByEntity
     public $address;
     public $date_delivery;
     public $time_delivery;
+    public $user_update;
 
     private $_user;
 
@@ -49,11 +50,23 @@ class CreateOrders extends ValidationModel implements GetInfoByEntity
 
             ['price_id', 'required', 'message' => 'укажи тип коробки'],
 
-            ['phone', 'integer', 'max' => 9999999999, 'min' => 9000000000],
-            [['date_delivery', 'time_delivery', 'pet_name', 'gender'], 'safe'],
+            ['pet_id', 'integer'],
+            ['user_update', 'integer'],
+            ['phone', 'integer'],
+            ['phone', 'validatePhone'],
+            [['date_delivery', 'time_delivery', 'pet_name', 'gender', 'breed', 'user_name', 'birthday_date', 'birthday_years', 'food_exceptions'], 'safe'],
             [['address', 'size'], 'string', 'max' => '255'],
             ['price_id', 'integer'],
         ];
+    }
+
+    public function validatePhone($attribute, $params)
+    {
+        if (!$this->hasErrors()) {
+            if ($this->phone < 1000000000 || $this->phone > 9999999999) {
+                $this->addError($attribute, 'Некорректная длина номера');
+            }
+        }
     }
 
     /**
@@ -70,6 +83,12 @@ class CreateOrders extends ValidationModel implements GetInfoByEntity
         $this->_user = User::findByEmail($this->email);
 
         if ($this->_user) {
+
+            $this->_user->name = $this->user_name;
+            $this->_user->phone = $this->phone;
+            $this->_user->address = $this->address;
+            $this->_user->save();
+
             $rez[] = 'пользователь найден';
         } else {
             $rez[] = ' нужно создать пользователя';
@@ -86,14 +105,31 @@ class CreateOrders extends ValidationModel implements GetInfoByEntity
             $user->status = User::STATUS_ACTIVE;
             $user->name = $this->user_name;
             $user->phone = $this->phone;
+            $user->address = $this->address;
             $user->save() && RegistrationUser::sendVerifyEmail('emailVerify', $user, $this->email, $password);
 
             // забираем нового пользователя для формирования заказа
             $this->_user = User::findByEmail($this->email);
         }
 
-        // проверяем наличие данных для нового питомца
-        if ($this->pet_name && $this->gender && $this->size) {
+        // если передан идентификатор питомца, обновим данные по нему
+        if ($this->pet_id) {
+            $rez[] = 'нужно обновить питомца';
+
+            $pet = Pet::findOne($this->pet_id);
+
+            $pet->gender = $this->gender;
+            $pet->birthday_date = $this->birthday_date;
+            $pet->name = $this->pet_name;
+            $pet->size = $this->size;
+            $pet->breed = $this->breed;
+            $pet->birthday_years = $this->birthday_years;
+            $pet->food_exceptions = $this->food_exceptions;
+            $pet->save();
+
+            $rez['$pet'] = $pet;
+        }// проверяем наличие данных для нового питомца
+        elseif ($this->pet_name && $this->gender && $this->size && !$this->pet_id) {
             $rez[] = 'нужно создать питомца';
 
             $pet = new Pet([
@@ -121,6 +157,8 @@ class CreateOrders extends ValidationModel implements GetInfoByEntity
             'size' => $this->size,
             'status_id' => 1,
             'address' => $this->address,
+            'name' => $this->user_name,
+            'phone' => $this->phone,
             'date_delivery' => $this->date_delivery,
             'time_delivery' => $this->time_delivery,
             'user_id' => $this->_user->id,
