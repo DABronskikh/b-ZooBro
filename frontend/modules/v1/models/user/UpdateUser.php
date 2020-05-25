@@ -13,6 +13,7 @@ class UpdateUser extends ValidationModel implements GetInfoByEntity
     public $password;
     public $phone;
     public $name;
+    public $address;
 
     /*@var User */
     private $user;
@@ -41,11 +42,21 @@ class UpdateUser extends ValidationModel implements GetInfoByEntity
             ['name', 'string', 'min' => 3, 'tooShort' => 'Минимальная длина имени 3 символа.'],
             ['name', 'string', 'max' => 50, 'tooLong' => 'Максимальная длина имени 50 символов.'],
 
-            ['phone', 'trim'],
+            ['address', 'trim'],
+            ['address', 'string', 'max' => 255, 'tooLong' => 'Максимальная длина адреса 255 символов.'],
+
             ['phone', 'integer', 'message' => 'номер должен быь числом'],
-            ['phone', 'string', 'min' => 10, 'tooShort' => 'Некорретная длина номера'],
-            ['phone', 'string', 'max' => 10, 'tooLong' => 'Некорретная длина номера'],
+            ['phone', 'validatePhone'],
         ];
+    }
+
+    public function validatePhone($attribute, $params)
+    {
+        if (!$this->hasErrors()) {
+            if ($this->phone < 1000000000 || $this->phone > 9999999999) {
+                $this->addError($attribute, 'Некорректная длина номера');
+            }
+        }
     }
 
     public function validateNewEmail($attribute)
@@ -69,25 +80,32 @@ class UpdateUser extends ValidationModel implements GetInfoByEntity
             return false;
         }
 
-        $this->user;
+        //$opdateUser = User::findOne($this->user->getId());
+        //return $opdateUser;
 
-        if ($this->email){
+        if ($this->email) {
             $this->user->email = $this->email;
         }
 
-        if ($this->name){
+        if ($this->name) {
             $this->user->name = $this->name;
         }
 
-        if ($this->phone){
+        if ($this->phone > 1) {
             $this->user->phone = $this->phone;
         }
 
-        if ($this->password){
+        if ($this->address) {
+            $this->user->address = $this->address;
+        }
+
+        if ($this->password) {
             $this->user->setPassword($this->password);
         }
 
+        //return $this->phone;
         return $this->user->save();
+        //return $this->user->phone;
 
     }
 }
