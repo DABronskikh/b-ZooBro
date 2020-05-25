@@ -68,6 +68,9 @@ return [
 
                         'POST update' => 'update',
                         'OPTIONS update' => 'options',
+
+                        'POST password-reset' => 'password-reset',
+                        'OPTIONS password-reset' => 'options',
                     ],
                     'pluralize' => false,
                 ],
