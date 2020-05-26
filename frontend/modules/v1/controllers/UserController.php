@@ -48,4 +48,8 @@ class UserController extends ApiController
         return $this->doActionByEntity(new PasswordResetUser(), true);
     }
 
+    public function actionSetPassword()
+    {
+        return $this->doActionByEntity(new SetPasswordUser(), true);
+    }
 }
