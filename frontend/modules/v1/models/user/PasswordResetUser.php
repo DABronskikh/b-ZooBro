@@ -67,7 +67,7 @@ class PasswordResetUser extends ValidationModel implements GetInfoByEntity
                 ['html' => $viewEmail . '-html', 'text' => $viewEmail . '-text'],
                 ['user' => $user]
             )
-            ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name . ' robot'])
+            ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name])
             ->setTo($email)
             ->setSubject('Восстановление пароля')
             ->send();
