@@ -34,7 +34,7 @@ class CreatePets extends ValidationModel implements GetInfoByEntity
             ['name', 'required', 'message' => 'Заполните имя питомца'],
             ['gender', 'required', 'message' => 'Укажите пол питомца'],
             ['size', 'required', 'message' => 'Укажите размер питомца'],
-            [['name', 'gender', 'type', 'size', 'breed', 'birthday_years', 'food_exceptions'], 'string', 'max' => 255],
+            [['name', 'gender', 'type', 'size', 'breed', 'birthday_years', 'food_exceptions', 'birthday_date'], 'string', 'max' => 255],
         ];
     }
 

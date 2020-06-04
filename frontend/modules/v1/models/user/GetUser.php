@@ -26,7 +26,7 @@ class GetUser extends ValidationModel implements GetInfoByEntity
 
         $id = Yii::$app->user->identity->getId();
         $user = User::find()
-            ->select(['name', 'email', 'is_admin', 'phone'])
+            ->select(['name', 'email', 'is_admin', 'phone', 'address'])
             ->where(['id' => $id])
             ->one();
 

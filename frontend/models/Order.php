@@ -20,6 +20,8 @@ use Yii;
  * @property int $user_id
  * @property float $cost
  * @property string $comment
+ * @property int|null $phone
+ * @property string|null $name
  *
  * @property OrderStatus $status
  * @property Pet $pet
@@ -42,11 +44,12 @@ class Order extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['pet_id', 'price_id', 'status_id', 'user_id'], 'integer'],
+            [['pet_id', 'price_id', 'status_id', 'user_id', 'phone'], 'integer'],
             [['size', 'address', 'date_delivery', 'time_delivery', 'user_id', 'cost', 'comment'], 'required'],
             [['date_create', 'date_delivery', 'time_delivery'], 'safe'],
             [['cost'], 'number'],
             [['size', 'address'], 'string', 'max' => 255],
+            [['name'], 'string', 'max' => 50],
             [['comment'], 'string', 'max' => 1500],
             [['status_id'], 'exist', 'skipOnError' => true, 'targetClass' => OrderStatus::className(), 'targetAttribute' => ['status_id' => 'id']],
             [['pet_id'], 'exist', 'skipOnError' => true, 'targetClass' => Pet::className(), 'targetAttribute' => ['pet_id' => 'id']],
@@ -62,17 +65,19 @@ class Order extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'pet_id' => 'Pet ID',
-            'price_id' => 'Price ID',
-            'size' => 'Size',
-            'status_id' => 'Status ID',
-            'address' => 'Address',
-            'date_create' => 'Date Create',
-            'date_delivery' => 'Date Delivery',
-            'time_delivery' => 'Time Delivery',
-            'user_id' => 'User ID',
-            'cost' => 'Cost',
-            'comment' => 'Comment',
+            'pet_id' => 'ID питомца',
+            'price_id' => 'ID прайса',
+            'size' => 'Размер',
+            'status_id' => 'ID статуса',
+            'address' => 'Адрес доставки',
+            'date_create' => 'Дата создания',
+            'date_delivery' => 'Дата доставки',
+            'time_delivery' => 'Время доставки',
+            'user_id' => 'ID пользователя',
+            'cost' => 'стоимость',
+            'comment' => 'Комментарий',
+            'name' => 'Имя пользователя',
+            'phone' => 'контактный телефон',
         ];
     }
 
@@ -123,5 +128,14 @@ class Order extends \yii\db\ActiveRecord
     public function getUser()
     {
         return $this->hasOne(User::className(), ['id' => 'user_id']);
+    }
+
+    public function getSize()
+    {
+        return [
+            '1' => 'Маленький',
+            '2' => 'Средний',
+            '3' => 'Большой',
+        ];
     }
 }

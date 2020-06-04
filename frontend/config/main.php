@@ -8,6 +8,7 @@ $params = array_merge(
 
 return [
     'language' => 'ru',
+    'name' => 'ZooBro',
     'id' => 'app-frontend',
     'homeUrl' => '/',
     'basePath' => dirname(__DIR__),
@@ -68,6 +69,12 @@ return [
 
                         'POST update' => 'update',
                         'OPTIONS update' => 'options',
+
+                        'POST password-reset' => 'password-reset',
+                        'OPTIONS password-reset' => 'options',
+
+                        'POST set-password' => 'set-password',
+                        'OPTIONS set-password' => 'options',
                     ],
                     'pluralize' => false,
                 ],

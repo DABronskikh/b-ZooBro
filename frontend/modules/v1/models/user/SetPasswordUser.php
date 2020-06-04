@@ -22,10 +22,27 @@ class SetPasswordUser extends ValidationModel implements GetInfoByEntity
     private $_user;
 
     /**
+     * {@inheritdoc}
+     */
+    public function rules()
+    {
+        return [
+            [['token', 'password'], 'trim'],
+            ['password', 'string', 'min' => 6, 'tooShort' => 'Минимальная длина пароля 6 символов.'],
+            ['token', 'required', 'message' => 'Не передан токен'],
+            ['password', 'required', 'message' => 'Не указан пароль'],
+        ];
+    }
+
+    /**
      * @throws \yii\base\Exception
      */
     public function getInfo()
     {
+        if (!$this->validate()) {
+            return false;
+        }
+
         $this->_user = User::findByPasswordResetToken($this->token);
 
         if (!$this->_user) {
@@ -33,7 +50,8 @@ class SetPasswordUser extends ValidationModel implements GetInfoByEntity
             return false;
         } else {
             $rez[] = ' пользователь найден';
-            $this->_user->password_hash = $this->setPassword($this->password);
+            //$this->_user->password_hash = $this->setPassword($this->password);
+            $this->_user->setPassword($this->password);
             return $this->_user->save();
         }
     }

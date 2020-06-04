@@ -34,13 +34,14 @@ class UpdatePets extends ValidationModel implements GetInfoByEntity
         return [
             ['id', 'required', 'message' => 'Не указан идентификатор питомца'],
             ['id', 'integer', 'message' => 'Идентификатор питомца должен быть числом'],
+            ['size', 'integer', 'message' => 'Размер питомца должен быть числом'],
 
             [['name', 'gender', 'type', 'breed', 'birthday_years', 'food_exceptions'], 'trim'],
 
             ['name', 'string', 'min' => 3, 'tooShort' => 'Минимальная длина имени 3 символа.'],
             ['name', 'string', 'max' => 50, 'tooLong' => 'Максимальная длина имени 50 символов.'],
 
-            [['name', 'gender', 'type', 'breed', 'birthday_years', 'food_exceptions'], 'string', 'max' => 255],
+            [['name', 'gender', 'type', 'breed', 'birthday_years', 'food_exceptions', 'birthday_date'], 'string', 'max' => 255],
         ];
     }
 

@@ -6,6 +6,7 @@ use frontend\modules\v1\models\user\GetUser;
 use frontend\modules\v1\models\user\PasswordResetUser;
 use frontend\modules\v1\models\user\RegistrationUser;
 use frontend\modules\v1\models\user\AuthenticationUser;
+use frontend\modules\v1\models\user\SetPasswordUser;
 use frontend\modules\v1\models\user\UpdateUser;
 
 class UserController extends ApiController
