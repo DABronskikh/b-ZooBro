@@ -39,8 +39,13 @@ $this->params['breadcrumbs'][] = $this->title;
                     return "{$data->price->id} | {$data->price->cost} | {$data->price->title}";
                 },
             ],
-
-            'size',
+            [
+                'attribute' => 'size',
+                'value' => function ($data) {
+                    return "{$data->getSize()[$data->size]}";
+                },
+            ],
+//            'size',
             //'status_id',
             [
                 'attribute' => 'status_id',
@@ -55,6 +60,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'time_delivery',
             'user_id',
             'cost',
+            'phone',
             'comment',
         ],
     ]) ?>

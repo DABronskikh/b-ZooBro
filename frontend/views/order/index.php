@@ -44,7 +44,7 @@ $this->params['breadcrumbs'][] = $this->title;
             //'user_id',
             //'cost',
             //'comment',
-
+            'phone',
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
