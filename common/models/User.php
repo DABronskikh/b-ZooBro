@@ -32,6 +32,8 @@ class User extends ActiveRecord implements IdentityInterface
     const STATUS_DELETED = 0;
     const STATUS_INACTIVE = 9;
     const STATUS_ACTIVE = 10;
+    const IS_USER = 0;
+    const IS_ADMIN = 1;
 
 
     /**
@@ -60,7 +62,22 @@ class User extends ActiveRecord implements IdentityInterface
         return [
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_INACTIVE, self::STATUS_DELETED]],
+            ['is_admin', 'in', 'range' => [self::IS_USER, self::IS_ADMIN]],
         ];
+    }
+
+    /**
+     * @param $email
+     * @return bool
+     */
+    public static function isUserAdmin($email)
+    {
+        if (static::findOne(['email' => $email, 'is_admin' => self::IS_ADMIN]))
+        {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
