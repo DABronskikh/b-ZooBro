@@ -189,7 +189,7 @@ class CreateOrders extends ValidationModel implements GetInfoByEntity
                 ['user' => $user, 'order' => $order]
             )
             ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name . ' robot'])
-            ->setTo([$email, Yii::$app->params['adminEmail']])
+            ->setTo([$email, self::get_admins()])
             ->setSubject('Ваш заказ создан')
             ->send();
     }
@@ -208,6 +208,14 @@ class CreateOrders extends ValidationModel implements GetInfoByEntity
             $password .= $chars[random_int(0, $size)];
         }
         return $password;
+    }
+
+    public static function get_admins(){
+        $users = User::find()->where(['is_admin' => 1])->all();
+        foreach ($users as $user) {
+            echo '\'' . $user->email . '\',';
+        }
+        return true;
     }
 
 }
