@@ -210,12 +210,13 @@ class CreateOrders extends ValidationModel implements GetInfoByEntity
         return $password;
     }
 
+    /**
+     *
+     */
     public static function get_admins(){
         $users = User::find()->where(['is_admin' => 1])->all();
         foreach ($users as $user) {
             echo '\'' . $user->email . '\',';
         }
-        return true;
     }
-
 }
