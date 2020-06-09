@@ -189,7 +189,7 @@ class CreateOrders extends ValidationModel implements GetInfoByEntity
                 ['user' => $user, 'order' => $order]
             )
             ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name . ' robot'])
-            ->setTo($email)
+            ->setTo([$email, Yii::$app->params['adminEmail']])
             ->setSubject('Ваш заказ создан')
             ->send();
     }
