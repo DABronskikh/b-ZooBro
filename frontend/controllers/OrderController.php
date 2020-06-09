@@ -28,10 +28,10 @@ class OrderController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['order'],
+                'only' => ['index', 'delete', 'create', 'update', 'view'],
                 'rules' => [
                     [
-                        'actions' => ['order'],
+                        'actions' => ['index', 'delete', 'create', 'update', 'view'],
                         'allow' => true,
                         'roles' => ['@'],
                         'matchCallback' => function ($rule, $action) {

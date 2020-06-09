@@ -122,4 +122,5 @@ return [
 
     ],
     'params' => $params,
+    'defaultRoute' => 'order',
 ];
